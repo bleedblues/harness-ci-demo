@@ -6,5 +6,8 @@
   "scripts": {
     "test": "echo \"Tests Passed\"",
     "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
   }
 }
