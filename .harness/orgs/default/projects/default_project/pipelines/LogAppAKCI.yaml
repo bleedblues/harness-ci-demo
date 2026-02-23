@@ -1,0 +1,56 @@
+pipeline:
+  name: LogApp-AK-CI
+  identifier: LogAppAKCI
+  projectIdentifier: default_project
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: HarnessGithubConnectorAK
+        build: <+input>
+  stages:
+    - stage:
+        name: Build
+        identifier: Build
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+            override: true
+          buildIntelligence:
+            enabled: true
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: HarnessKubeConnectorAK
+              namespace: default
+              automountServiceAccountToken: true
+              nodeSelector: {}
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Install and Test
+                  identifier: Install_and_Test
+                  spec:
+                    connectorRef: HarnessDockerConnectorAK
+                    image: node:18
+                    shell: Sh
+                    command: |-
+                      npm install
+                      npm test
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: Build and Push Image
+                  identifier: Build_and_Push_Image
+                  spec:
+                    connectorRef: HarnessDockerConnectorAK
+                    repo: akhil190800/harness-ci-demo
+                    tags:
+                      - latest
+                    dockerfile: Dockerfile
+                    context: .
