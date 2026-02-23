@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: harness-ci-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: harness-ci-demo
+  template:
+    metadata:
+      labels:
+        app: harness-ci-demo
+    spec:
+      containers:
+        - name: harness-ci-demo
+          image: akhil190800/harness-ci-demo:latest
+          ports:
+            - containerPort: 3000
