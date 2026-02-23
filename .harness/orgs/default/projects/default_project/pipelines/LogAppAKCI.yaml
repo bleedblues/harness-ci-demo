@@ -44,13 +44,8 @@ pipeline:
                       npm install
                       npm test
               - step:
-                  type: BuildAndPushDockerRegistry
-                  name: Build and Push Image
-                  identifier: Build_and_Push_Image
-                  spec:
-                    connectorRef: HarnessDockerConnectorAK
-                    repo: akhil190800/harness-ci-demo
-                    tags:
-                      - latest
-                    dockerfile: Dockerfile
-                    context: .
+                  name: Build and Push Docker using Template
+                  identifier: Build_and_Push_Docker_using_Template
+                  template:
+                    templateRef: DockerBuildAndPushTemplate
+                    versionLabel: v1
